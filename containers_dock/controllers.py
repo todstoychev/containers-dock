@@ -16,15 +16,15 @@ class ContainersController:
         self.__table = table
         self.__show_all = show_all
 
-    def list(self, show_all=False):
+    def list(self):
         """
         Lists container data and sets up the table.
 
-        :param show_all: Lists all containers, including stopped, if set to True.
         :return:
         """
 
-        containers = self.__client.containers.list(show_all)
+        QApplication.instance().setOverrideCursor(Qt.BusyCursor)
+        containers = self.__client.containers.list(self.__show_all.isChecked())
         self.__table.clear()
         self.__table.setRowCount(0)
         self.__table.setRowCount(containers.__len__())
@@ -44,6 +44,8 @@ class ContainersController:
             ], row)
             row += 1
 
+        QApplication.instance().restoreOverrideCursor()
+
     def stop_containers(self):
         QApplication.instance().setOverrideCursor(Qt.BusyCursor)
         containers = self.__table.get_selected_items(0)
@@ -51,7 +53,6 @@ class ContainersController:
         for container in containers:
             self.__client.containers.get(container).stop()
 
-        self.list(self.__show_all.isChecked())
         QApplication.instance().restoreOverrideCursor()
 
     def start_containers(self):
@@ -61,7 +62,6 @@ class ContainersController:
         for container in containers:
             self.__client.containers.get(container).start()
 
-        self.list(self.__show_all.isChecked())
         QApplication.instance().restoreOverrideCursor()
 
     def restart_containers(self):
@@ -71,7 +71,7 @@ class ContainersController:
         for container in containers:
             self.__client.containers.get(container).restart()
 
-        self.list(self.__show_all.isChecked())
+        # self.list(self.__show_all.isChecked())
         QApplication.instance().restoreOverrideCursor()
 
     def remove_containers(self):
@@ -81,7 +81,7 @@ class ContainersController:
         for container in containers:
             self.__client.containers.get(container).remove(force=True)
 
-        self.list(self.__show_all.isChecked())
+        # self.list(self.__show_all.isChecked())
         QApplication.instance().restoreOverrideCursor()
 
     def open_terminal(self):
@@ -93,8 +93,8 @@ class ContainersController:
             p = Process(target=command)
             p.start()
 
-        self.list(self.__show_all.isChecked())
+        # self.list(self.__show_all.isChecked())
         QApplication.instance().restoreOverrideCursor()
 
     def toggle_show_all(self):
-        self.list(self.__show_all.isChecked())
+        self.list()

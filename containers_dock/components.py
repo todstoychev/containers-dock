@@ -6,8 +6,6 @@ import qtawesome
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QToolBar, QAction, QTableWidget, QTableWidgetItem, QAbstractItemView, \
     QCheckBox
 
-from containers_dock import app
-
 
 class Containers(QWidget):
     """
@@ -178,6 +176,3 @@ class ShowAll(QCheckBox):
         super().__init__(*__args)
         self.setText('Show all')
         self.setToolTip('Displays stopped containers if checked.')
-
-
-

@@ -6,9 +6,11 @@ import sys
 import docker
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
+
 from containers_dock.components import Containers
 from containers_dock.controllers import ContainersController
 from containers_dock.mappers import ContainerMapper
+from containers_dock.threads import EventsThread
 
 
 class App:
@@ -25,7 +27,7 @@ class App:
             self.__client,
             self.__container_mapper,
             self.__main_widget.table,
-            self.__main_widget.show_all
+            self.__main_widget.show_all,
         )
 
     def run(self):
@@ -44,7 +46,11 @@ class App:
         self.__main_widget.toolbar.terminal_action.triggered.connect(self.__containers_controller.open_terminal)
         self.__main_widget.show_all.clicked.connect(self.__containers_controller.toggle_show_all)
 
-        self.__app.exec_()
+        events = EventsThread(client=self.__client)
+        events.start()
+        events.refresh_list.connect(self.__containers_controller.list)
+
+        self.__app.exec()
 
     @property
     def client(self):

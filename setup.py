@@ -21,7 +21,7 @@ setup(
     author='Todor Todorov',
     author_email='todstoychev@gmail.com',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 3',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
