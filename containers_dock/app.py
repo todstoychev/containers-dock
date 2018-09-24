@@ -13,7 +13,7 @@ from containers_dock.mappers import ContainerMapper
 
 class App:
     APP_NAME = "Containers dock"
-    VERSION = "0.1.3"
+    VERSION = "0.1.4"
     ICON = "resources/icon.png"
 
     def __init__(self):
