@@ -15,7 +15,7 @@ from containers_dock.threads import EventsThread
 
 class App:
     APP_NAME = "Containers dock"
-    VERSION = "0.1.5"
+    VERSION = "0.1.6"
     ICON = "resources/icon.png"
 
     def __init__(self):
