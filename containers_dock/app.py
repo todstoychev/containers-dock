@@ -15,7 +15,7 @@ from containers_dock.threads import EventsThread
 
 class App:
     APP_NAME = "Containers dock"
-    VERSION = "0.1.6"
+    VERSION = "0.2.0"
     ICON = "resources/icon.png"
 
     def __init__(self):
@@ -44,6 +44,7 @@ class App:
         self.__main_widget.toolbar.restart_action.triggered.connect(self.__containers_controller.restart_containers)
         self.__main_widget.toolbar.remove_action.triggered.connect(self.__containers_controller.remove_containers)
         self.__main_widget.toolbar.terminal_action.triggered.connect(self.__containers_controller.open_terminal)
+        self.__main_widget.toolbar.logs_action.triggered.connect(self.__containers_controller.logs)
         self.__main_widget.show_all.clicked.connect(self.__containers_controller.toggle_show_all)
 
         events = EventsThread(client=self.__client)
