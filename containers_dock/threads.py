@@ -2,7 +2,6 @@ import json
 
 from PyQt5.QtCore import QThread, pyqtSignal
 from docker import DockerClient
-from docker.models.containers import Container
 
 
 class EventsThread(QThread):

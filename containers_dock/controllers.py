@@ -7,7 +7,6 @@ from docker import DockerClient
 
 from containers_dock.components import Table, ShowAll, Logs
 from containers_dock.mappers import ContainerMapper
-from containers_dock.threads import LogsThread
 
 
 class ContainersController:

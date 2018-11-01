@@ -3,9 +3,8 @@ Qt components classes
 """
 
 import qtawesome
-from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QToolBar, QAction, QTableWidget, QTableWidgetItem, QAbstractItemView, \
-    QCheckBox, QPlainTextEdit
+    QCheckBox
 
 
 class Containers(QWidget):
