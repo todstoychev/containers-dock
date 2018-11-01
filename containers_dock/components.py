@@ -3,10 +3,9 @@ Qt components classes
 """
 
 import qtawesome
-from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtGui import QWindow
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QToolBar, QAction, QTableWidget, QTableWidgetItem, QAbstractItemView, \
-    QCheckBox, QDialog, QPlainTextEdit
+    QCheckBox, QPlainTextEdit
 
 
 class Containers(QWidget):
@@ -188,30 +187,3 @@ class ShowAll(QCheckBox):
         super().__init__(*__args)
         self.setText('Show all')
         self.setToolTip('Displays stopped containers if checked.')
-
-
-class Logs(QWidget):
-    """
-    Logs window.
-
-    Attributes:
-        :__layout (QVBoxLayout):
-    """
-
-    def __init__(self, flags=None, container=None, *args):
-        """
-        :type __container: Container
-        """
-        super().__init__(flags, *args)
-        self.__container = container
-        self.__layout = QVBoxLayout()
-        self.__text_area = QPlainTextEdit()
-
-    def build(self):
-        self.setWindowTitle("Logs for container '" + self.__container.name + "'")
-        self.setLayout(self.__layout)
-        self.__layout.addWidget(self.__text_area)
-
-    @pyqtSlot(str, name='logs_line')
-    def on_logs_line(self, line):
-        self.__text_area.insertPlainText(line+"\n")

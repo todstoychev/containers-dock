@@ -1,6 +1,5 @@
 import subprocess
 from multiprocessing import Process
-from threading import Thread
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
@@ -103,11 +102,9 @@ class ContainersController:
 
         for container in containers:
             container_obj = self.__client.containers.get(container)
-            logs = Logs(container=container_obj)
-            logs.build()
-            logs.showMaximized()
-            logs_thread = LogsThread(container=container_obj)
-            logs_thread.start()
+            command = subprocess.Popen(['x-terminal-emulator', '-e', 'docker', 'logs', container, '-f'])
+            p = Process(target=command)
+            p.start()
 
         QApplication.instance().restoreOverrideCursor()
 
