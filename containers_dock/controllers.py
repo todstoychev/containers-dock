@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 from docker import DockerClient
 
-from containers_dock.components import Table, ShowAll, Logs
+from containers_dock.components import Table, ShowAll
 from containers_dock.mappers import ContainerMapper
 
 
@@ -100,7 +100,6 @@ class ContainersController:
         containers = self.__table.get_selected_items(0)
 
         for container in containers:
-            container_obj = self.__client.containers.get(container)
             command = subprocess.Popen(['x-terminal-emulator', '-e', 'docker', 'logs', container, '-f'])
             p = Process(target=command)
             p.start()
