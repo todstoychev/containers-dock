@@ -2,6 +2,9 @@ import json
 
 from PyQt5.QtCore import QThread, pyqtSignal
 from docker import DockerClient
+from docker.models.containers import Container
+
+from containers_dock.components import Logs
 
 
 class EventsThread(QThread):
@@ -31,3 +34,29 @@ class EventsThread(QThread):
             if event['Type'] == 'container':
                 self.refresh_list.emit()
                 pass
+
+
+class LogsThread(QThread):
+    """
+    LogsThread is used to start new Logs widget.
+
+    Attributes:
+        :logs_line (pyqtSignal):
+        :__container (Container):
+    """
+    logs_line = pyqtSignal([str])
+
+    def __init__(self, container: Container):
+        """
+        :param container:
+        """
+        super().__init__()
+        self.container = container
+
+    def run(self):
+        for line in self.container.logs(stream=True):
+            self.logs_line.emit(line.strip().decode('utf-8'))
+
+        pass
+
+

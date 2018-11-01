@@ -3,8 +3,10 @@ Qt components classes
 """
 
 import qtawesome
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtGui import QWindow
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QToolBar, QAction, QTableWidget, QTableWidgetItem, QAbstractItemView, \
-    QCheckBox
+    QCheckBox, QDialog, QPlainTextEdit
 
 
 class Containers(QWidget):
@@ -61,6 +63,7 @@ class Toolbar(QToolBar):
         :__restart_action (QAction):
         :__delete_action (QAction):
         :__terminal_action (QAction):
+        :__logs_action (QAction):
     """
 
     def __init__(self, *__args):
@@ -70,6 +73,7 @@ class Toolbar(QToolBar):
         self.__restart_action = QAction(qtawesome.icon('fa.refresh'), 'Restart', self)
         self.__remove_action = QAction(qtawesome.icon('fa.trash'), 'Delete', self)
         self.__terminal_action = QAction(qtawesome.icon('fa.terminal'), 'Terminal', self)
+        self.__logs_action = QAction(qtawesome.icon('fa.list'), 'Logs', self)
         self.__show_all = QCheckBox('Show all')
 
     def build(self):
@@ -93,6 +97,10 @@ class Toolbar(QToolBar):
         self.__terminal_action.setToolTip('Open terminal session to containers.')
         self.addAction(self.__terminal_action)
 
+        # Logs action
+        self.__logs_action.setToolTip('Stream container log.')
+        self.addAction(self.__logs_action)
+
     @property
     def start_action(self):
         return self.__start_action
@@ -112,6 +120,10 @@ class Toolbar(QToolBar):
     @property
     def terminal_action(self):
         return self.__terminal_action
+
+    @property
+    def logs_action(self):
+        return self.__logs_action
 
 
 class Table(QTableWidget):
@@ -176,3 +188,30 @@ class ShowAll(QCheckBox):
         super().__init__(*__args)
         self.setText('Show all')
         self.setToolTip('Displays stopped containers if checked.')
+
+
+class Logs(QWidget):
+    """
+    Logs window.
+
+    Attributes:
+        :__layout (QVBoxLayout):
+    """
+
+    def __init__(self, flags=None, container=None, *args):
+        """
+        :type __container: Container
+        """
+        super().__init__(flags, *args)
+        self.__container = container
+        self.__layout = QVBoxLayout()
+        self.__text_area = QPlainTextEdit()
+
+    def build(self):
+        self.setWindowTitle("Logs for container '" + self.__container.name + "'")
+        self.setLayout(self.__layout)
+        self.__layout.addWidget(self.__text_area)
+
+    @pyqtSlot(str, name='logs_line')
+    def on_logs_line(self, line):
+        self.__text_area.insertPlainText(line+"\n")

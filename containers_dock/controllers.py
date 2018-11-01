@@ -1,12 +1,14 @@
 import subprocess
 from multiprocessing import Process
+from threading import Thread
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 from docker import DockerClient
 
-from containers_dock.components import Table, ShowAll
+from containers_dock.components import Table, ShowAll, Logs
 from containers_dock.mappers import ContainerMapper
+from containers_dock.threads import LogsThread
 
 
 class ContainersController:
@@ -15,6 +17,7 @@ class ContainersController:
         self.__mapper = container_mapper
         self.__table = table
         self.__show_all = show_all
+        self.__logs = None
 
     def list(self):
         """
@@ -71,7 +74,6 @@ class ContainersController:
         for container in containers:
             self.__client.containers.get(container).restart()
 
-        # self.list(self.__show_all.isChecked())
         QApplication.instance().restoreOverrideCursor()
 
     def remove_containers(self):
@@ -81,7 +83,6 @@ class ContainersController:
         for container in containers:
             self.__client.containers.get(container).remove(force=True)
 
-        # self.list(self.__show_all.isChecked())
         QApplication.instance().restoreOverrideCursor()
 
     def open_terminal(self):
@@ -94,6 +95,20 @@ class ContainersController:
             p.start()
 
         # self.list(self.__show_all.isChecked())
+        QApplication.instance().restoreOverrideCursor()
+
+    def logs(self):
+        QApplication.instance().setOverrideCursor(Qt.BusyCursor)
+        containers = self.__table.get_selected_items(0)
+
+        for container in containers:
+            container_obj = self.__client.containers.get(container)
+            logs = Logs(container=container_obj)
+            logs.build()
+            logs.showMaximized()
+            logs_thread = LogsThread(container=container_obj)
+            logs_thread.start()
+
         QApplication.instance().restoreOverrideCursor()
 
     def toggle_show_all(self):
