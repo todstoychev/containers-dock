@@ -2,11 +2,10 @@ import datetime
 
 
 class Container:
-    def __init__(self, container_id='', name='', status='', image='', command=None, ports=None, created=None):
+    def __init__(self, container_id='', name='', status='', image='', command='', ports=None, created=None):
         if ports is None:
             ports = {}
-        if command is None:
-            command = []
+
         self.__id = container_id
         self.__name = name
         self.__status = status
@@ -49,15 +48,7 @@ class Container:
 
     @property
     def command(self):
-        string = ''
-
-        if type(self.__command).__name__ != 'NoneType':
-            return string
-
-        for c in self.__command:
-            string += ' ' + c
-
-        return string
+        return self.__command
 
     @command.setter
     def command(self, value: list):
