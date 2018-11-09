@@ -55,8 +55,6 @@ class ContainerMapper:
         if ports.__len__() == 0:
             return ''
 
-        print(ports)
-
         parsed = ''
         keys = sorted(ports.keys())
 
@@ -70,8 +68,8 @@ class ContainerMapper:
                     if mapping.get('HostPort') != mappings[-1].get('HostPort') or port != keys[-1]:
                         parsed += ', '
 
-            if port != keys[-1]:
-                parsed += ', '
+                if port != keys[-1]:
+                    parsed += ', '
 
         return parsed
 

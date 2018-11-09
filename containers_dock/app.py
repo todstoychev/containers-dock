@@ -11,14 +11,12 @@ from containers_dock.components import Containers
 from containers_dock.controllers import ContainersController
 from containers_dock.mappers import ContainerMapper
 from containers_dock.threads import EventsThread
+from containers_dock.utils import Config
 
 
 class App:
-    APP_NAME = "Containers dock"
-    VERSION = "0.2.3"
-    ICON = "resources/icon.png"
-
     def __init__(self):
+        self.__config = Config()
         self.__app = QApplication(sys.argv)
         self.__main_widget = Containers()
         self.__client = docker.from_env()
@@ -31,9 +29,9 @@ class App:
         )
 
     def run(self):
-        title = self.APP_NAME + ' v.' + self.VERSION
+        title = self.__config.get('app.name') + ' v.' + self.__config.get('app.version')
         self.__main_widget.setWindowTitle(title)
-        self.__main_widget.setWindowIcon(QIcon(self.ICON))
+        self.__main_widget.setWindowIcon(QIcon(self.__config.get('app.icon')))
         self.__main_widget.build()
         self.__containers_controller.list()
         self.__main_widget.showMaximized()
