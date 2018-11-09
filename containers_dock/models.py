@@ -56,12 +56,7 @@ class Container:
 
     @property
     def ports(self):
-        ports = ''
-
-        for p in list(self.__ports.keys()):
-            ports += ' ' + p
-
-        return ports
+        return self.__ports
 
     @ports.setter
     def ports(self, value: dict):
