@@ -52,7 +52,7 @@ class ContainerMapper:
             parsed += port        :param ports:  Ports mappings
         :return: Ports string
         """
-        if ports.__len__() == 0:
+        if ports is None or ports.__len__() == 0:
             return ''
 
         parsed = ''
