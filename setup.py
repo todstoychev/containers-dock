@@ -18,7 +18,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='containers_dock',
-    version=Config().get('app.version'),
+    version='0.3.2',
     description='Application used to control docker containers.',
     author='Todor Todorov',
     author_email='todstoychev@gmail.com',
