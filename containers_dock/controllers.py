@@ -4,6 +4,7 @@ from multiprocessing import Process
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 from docker import DockerClient
+from signal_dispatcher.signal_dispatcher import SignalDispatcher
 
 from containers_dock.components import Table, ShowAll
 from containers_dock.mappers import ContainerMapper
@@ -16,6 +17,14 @@ class ContainersController:
         self.__table = table
         self.__show_all = show_all
         self.__logs = None
+        SignalDispatcher.register_handler('stop_containers', self.stop_containers)
+        SignalDispatcher.register_handler('start_containers', self.start_containers)
+        SignalDispatcher.register_handler('restart_containers', self.restart_containers)
+        SignalDispatcher.register_handler('remove_containers', self.remove_containers)
+        SignalDispatcher.register_handler('list_containers', self.list)
+        SignalDispatcher.register_handler('open_terminal', self.open_terminal)
+        SignalDispatcher.register_handler('open_logs', self.logs)
+        SignalDispatcher.register_handler('toggle_show_all', self.toggle_show_all)
 
     def list(self):
         """
@@ -89,7 +98,7 @@ class ContainersController:
 
         for container in containers:
             command = subprocess.Popen(['x-terminal-emulator', '-e', 'docker', 'exec', '-it', container, 'sh'])
-            p = Process(target=command)
+            p = Process(target=command.stdout)
             p.start()
 
         # self.list(self.__show_all.isChecked())
@@ -101,7 +110,7 @@ class ContainersController:
 
         for container in containers:
             command = subprocess.Popen(['x-terminal-emulator', '-e', 'docker', 'logs', container, '-f'])
-            p = Process(target=command)
+            p = Process(target=command.stdout)
             p.start()
 
         QApplication.instance().restoreOverrideCursor()

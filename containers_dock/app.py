@@ -6,6 +6,7 @@ import sys
 import docker
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
+from signal_dispatcher.signal_dispatcher import SignalDispatcher
 
 from containers_dock.components import Containers
 from containers_dock.controllers import ContainersController
@@ -36,18 +37,11 @@ class App:
         self.__containers_controller.list()
         self.__main_widget.showMaximized()
 
-        # Mapping actions
-        self.__main_widget.toolbar.stop_action.triggered.connect(self.__containers_controller.stop_containers)
-        self.__main_widget.toolbar.start_action.triggered.connect(self.__containers_controller.start_containers)
-        self.__main_widget.toolbar.restart_action.triggered.connect(self.__containers_controller.restart_containers)
-        self.__main_widget.toolbar.remove_action.triggered.connect(self.__containers_controller.remove_containers)
-        self.__main_widget.toolbar.terminal_action.triggered.connect(self.__containers_controller.open_terminal)
-        self.__main_widget.toolbar.logs_action.triggered.connect(self.__containers_controller.logs)
-        self.__main_widget.show_all.clicked.connect(self.__containers_controller.toggle_show_all)
-
         events = EventsThread(client=self.__client)
         events.start()
         events.refresh_list.connect(self.__containers_controller.list)
+
+        SignalDispatcher.dispatch()
 
         self.__app.exec()
 

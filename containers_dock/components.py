@@ -4,7 +4,8 @@ Qt components classes
 
 import qtawesome
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QToolBar, QAction, QTableWidget, QTableWidgetItem, \
-    QAbstractItemView, QCheckBox, QStatusBar
+    QAbstractItemView, QCheckBox
+from signal_dispatcher.signal_dispatcher import SignalDispatcher
 
 
 class Containers(QWidget):
@@ -22,6 +23,7 @@ class Containers(QWidget):
         self.__toolbar = Toolbar()
         self.__table = Table()
         self.__show_all = ShowAll()
+        SignalDispatcher.register_signal('toggle_show_all', self.__show_all.clicked)
 
     def build(self):
         """
@@ -77,26 +79,32 @@ class Toolbar(QToolBar):
     def build(self):
         # Start action
         self.__start_action.setToolTip('Start container')
+        SignalDispatcher.register_signal('start_containers', self.__start_action.triggered)
         self.addAction(self.__start_action)
 
         # Stop action
         self.__stop_action.setToolTip('Stops running containers.')
+        SignalDispatcher.register_signal('stop_containers', self.__stop_action.triggered)
         self.addAction(self.__stop_action)
 
         # Restart action
         self.__restart_action.setToolTip('Restart containers.')
+        SignalDispatcher.register_signal('restart_containers', self.__restart_action.triggered)
         self.addAction(self.__restart_action)
 
         # Delete action
         self.__remove_action.setToolTip('Force deletes container.')
+        SignalDispatcher.register_signal('remove_containers', self.__remove_action.triggered)
         self.addAction(self.__remove_action)
 
         # Terminal action
         self.__terminal_action.setToolTip('Open terminal session to containers.')
+        SignalDispatcher.register_signal('open_terminal', self.__terminal_action.triggered)
         self.addAction(self.__terminal_action)
 
         # Logs action
         self.__logs_action.setToolTip('Stream container log.')
+        SignalDispatcher.register_signal('open_logs', self.__logs_action.triggered)
         self.addAction(self.__logs_action)
 
     @property

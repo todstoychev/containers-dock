@@ -22,6 +22,7 @@ setup(
     description='Application used to control docker containers.',
     author='Todor Todorov',
     author_email='todstoychev@gmail.com',
+    url='https://github.com/todstoychev/containers-dock',
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
