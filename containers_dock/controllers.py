@@ -17,14 +17,14 @@ class ContainersController:
         self.__table = table
         self.__show_all = show_all
         self.__logs = None
-        SignalDispatcher.register_handler('stop_containers', self.stop_containers)
-        SignalDispatcher.register_handler('start_containers', self.start_containers)
-        SignalDispatcher.register_handler('restart_containers', self.restart_containers)
-        SignalDispatcher.register_handler('remove_containers', self.remove_containers)
-        SignalDispatcher.register_handler('list_containers', self.list)
-        SignalDispatcher.register_handler('open_terminal', self.open_terminal)
-        SignalDispatcher.register_handler('open_logs', self.logs)
-        SignalDispatcher.register_handler('toggle_show_all', self.toggle_show_all)
+        SignalDispatcher.register_handler('containers_dock.stop_containers', self.stop_containers)
+        SignalDispatcher.register_handler('containers_dock.start_containers', self.start_containers)
+        SignalDispatcher.register_handler('containers_dock.restart_containers', self.restart_containers)
+        SignalDispatcher.register_handler('containers_dock.remove_containers', self.remove_containers)
+        SignalDispatcher.register_handler('containers_dock.list_containers', self.list)
+        SignalDispatcher.register_handler('containers_dock.open_terminal', self.open_terminal)
+        SignalDispatcher.register_handler('containers_dock.open_logs', self.logs)
+        SignalDispatcher.register_handler('containers_dock.toggle_show_all', self.toggle_show_all)
 
     def list(self):
         """
